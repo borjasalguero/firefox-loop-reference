@@ -5,6 +5,7 @@
 var debug = true;
 var _opentokWorking = false;
 var _simplewebrtcWorking = false;
+var _gumWorking = false;
 
 // OpenTok params
 var apiKey = "44981402";
@@ -19,6 +20,7 @@ var constraints = {
 // Buttons to start/stop the stream
 var _handlerOpentok = null;
 var _handlerSimplewebrtc = null;
+var _handlerGUM = null;
 
 function _clean() {
   if (_opentokWorking) {
@@ -33,6 +35,10 @@ function _clean() {
       '<div id="video-simplewebrtc-remotes"></div>';
   }
 
+  if (_gumWorking) {
+    document.getElementById('video-gum-container').innerHTML = '';
+  }
+
   var videos = document.querySelectorAll('.OT_root');
   for (var i = 0; i < videos.length; i++) {
     videos[i].parentNode.removeChild(videos[i]);
@@ -40,6 +46,7 @@ function _clean() {
 
   _opentokWorking = false;
   _simplewebrtcWorking = false;
+  _gumWorking = false;
 }
 
 function _cancel() {
@@ -52,11 +59,19 @@ window.addEventListener('load', function load() {
     window.location.hash = 'opentok';
   });
 
+  document.getElementById('launch-gum').addEventListener('click', function() {
+    window.location.hash = 'gum';
+  });
+
   document.getElementById('launch-simplewebrtc').addEventListener('click', function() {
     window.location.hash = 'simplewebrtc';
   });
 
   document.getElementById('cancel-opentok').addEventListener('click', function() {
+    _cancel();
+  });
+
+  document.getElementById('cancel-gum').addEventListener('click', function() {
     _cancel();
   });
 
@@ -94,6 +109,36 @@ window.addEventListener('load', function load() {
         }
       );
     });
+  });
+
+
+  _handlerGUM = document.getElementById('gum-stream-handler');
+  _handlerGUM.addEventListener('click', function() {
+    if (_gumWorking) {
+      _clean();
+      _handlerGUM.textContent = 'Start';
+      return;
+    }
+    _gumWorking = true;
+    _handlerGUM.textContent = 'Stop';
+
+
+    navigator.mozGetUserMedia(
+      {
+        video: true,
+        audio: false
+      },
+      function onStreamReady(stream) {
+        var video = document.createElement('video');
+        video.muted = true;
+        video.mozSrcObject = stream;
+        document.getElementById('video-gum-container').appendChild(video);
+        video.play();
+      },
+      function(err) {
+        console.log("An error occured! " + err);
+      }
+    );
   });
 
   _handlerSimplewebrtc = document.getElementById('simplewebrtc-stream-handler');
