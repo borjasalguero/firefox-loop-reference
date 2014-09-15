@@ -15878,6 +15878,44 @@ waitForDomReady();
             }
           }
           return statsString;
+        },
+        dumpAvStat = function dumpAvStat(stat) {
+	  var statsString = '';
+	  if (stat.mozAvSyncDelay !== undefined) {
+	    statsString += "A/V sync: " + stat.mozAvSyncDelay + " ms ";
+	  }
+	  if (stat.mozJitterBufferDelay !== undefined) {
+	    statsString += "Jitter-buffer delay: " + stat.mozJitterBufferDelay + " ms";
+	  }
+          return statsString;
+        },
+        dumpCoderStat = function dumpCoderStat(stat) {
+          var statsString = '';
+	  if (stat.bitrateMean !== undefined ||
+	      stat.framerateMean !== undefined ||
+	      stat.droppedFrames !== undefined ||
+	      stat.discardedPackets !== undefined) {
+	    statsString = (stat.packetsReceived !== undefined)? " Decoder:" : " Encoder:";
+	    if (stat.bitrateMean !== undefined) {
+	      statsString += " Avg. bitrate: " + (stat.bitrateMean/1000000).toFixed(2) + " Mbps";
+	      if (stat.bitrateStdDev !== undefined) {
+		statsString += " (" + (stat.bitrateStdDev/1000000).toFixed(2) + " SD)";
+	      }
+	    }
+	    if (stat.framerateMean !== undefined) {
+	      statsString += " Avg. framerate: " + (stat.framerateMean).toFixed(2) + " fps";
+	      if (stat.framerateStdDev !== undefined) {
+		statsString += " (" + stat.framerateStdDev.toFixed(2) + " SD)";
+	      }
+	    }
+	    if (stat.droppedFrames !== undefined) {
+	      statsString += " Dropped frames: " + stat.droppedFrames;
+	    }
+	    if (stat.discardedPackets !== undefined) {
+	      statsString += " Discarded packets: " + stat.discardedPackets;
+	    }
+	  }
+          return statsString;
         };
 
     peerConnection.getStats(null, function(stats) {
@@ -15888,13 +15926,23 @@ waitForDomReady();
 
           var res = stats[key];
 
-          OT.log('WebRTC stats - ' + ' * ' + key + ' * ');
+          var statsString = 'WebRTC stats - ' + key + ' * ';
           if (!res.isRemote) {
-            OT.log('WebRTC stats - ' + ' ** ' + dumpRtpStats(res, 'Local') + ' ** ');
+	    if (res.mozAvSyncDelay !== undefined ||
+		res.mozJitterBufferDelay !== undefined) {
+	      if (dumpAvStat(res)) {
+                statsString += 'WebRTC A/V stats - ' + dumpAvStat(res) + ' * ';
+              }
+	    }
+	    if (dumpCoderStat(res)) {
+	      statsString += 'WebRTC Coder stats - ' + dumpCoderStat(res) + ' * ';
+	    }
+            statsString += 'WebRTC RTP stats - ' + dumpRtpStats(res, 'Local') + ' * ';
             if (res.remoteId) {
-              OT.log('WebRTC stats - ' + ' ** ' + dumpRtpStats(stats[res.remoteId], 'Remote') + ' ** ');
+              statsString += 'WebRTC RTP stats - ' + dumpRtpStats(stats[res.remoteId], 'Remote') + ' * ';
             }
           }
+          OT.log(statsString);
 
           // Find the bandwidth info for video
           if (res.id.indexOf('video') !== -1) {
