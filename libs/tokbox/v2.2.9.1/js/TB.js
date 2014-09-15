@@ -15853,8 +15853,32 @@ waitForDomReady();
           var transferDelta = currentStats.audioBytesTransferred -
                                         (prevStats.audioBytesTransferred || 0);
           return Math.round(transferDelta * 8 / currentStats.deltaSecs);
-        };
+        },
 
+        round = function round(num) {
+          return Math.round(num * 100) / 100;
+        },
+
+        dumpRtpStats = function dumpRtpStats(stat, label) {
+          var statsString = label + " " + new Date(stat.timestamp).toTimeString() +
+                            " " + stat.type + " SSRC: " + stat.ssrc;
+          if (stat.packetsReceived !== undefined) {
+            statsString += " Received: " + stat.packetsReceived + " packets";
+            if (stat.bytesReceived !== undefined) {
+              statsString += " (" + round(stat.bytesReceived/1024) + " Kb)";
+            }
+            statsString += " Lost: " + stat.packetsLost + " Jitter: " + stat.jitter;
+            if (stat.mozRtt !== undefined) {
+              statsString += " RTT: " + stat.mozRtt + " ms";
+            }
+          } else if (stat.packetsSent !== undefined) {
+            statsString += " Sent: " + stat.packetsSent + " packets";
+            if (stat.bytesSent !== undefined) {
+              statsString += " (" + round(stat.bytesSent/1024) + " Kb)";
+            }
+          }
+          return statsString;
+        };
 
     peerConnection.getStats(null, function(stats) {
 
@@ -15863,6 +15887,14 @@ waitForDomReady();
           (stats[key].type === 'outboundrtp' || stats[key].type === 'inboundrtp')) {
 
           var res = stats[key];
+
+          OT.log('WebRTC stats - ' + ' * ' + key + ' * ');
+          if (!res.isRemote) {
+            OT.log('WebRTC stats - ' + ' ** ' + dumpRtpStats(res, 'Local') + ' ** ');
+            if (res.remoteId) {
+              OT.log('WebRTC stats - ' + ' ** ' + dumpRtpStats(stats[res.remoteId], 'Remote') + ' ** ');
+            }
+          }
 
           // Find the bandwidth info for video
           if (res.id.indexOf('video') !== -1) {
