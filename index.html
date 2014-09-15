@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>Firefox Hello: QApp</title>
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    
+    
+    <script src='libs/opentok.js'></script>
+    <script src='libs/tokbox/v2.2.6/js/TB.js'></script>
+    <script src='libs/simplewebrtc.js'></script>
+
+    <script src='js/app.js'></script>
+  </head>
+  <body>
+    <section id="menu" class="panel">
+      <h1>Firefox Hello</h1>
+      <h2>Reference QApp</h2>
+      <p>Remember to enable 'Developer > Developer HUD > Frames por second'. Then execute 'adb logcat | grep HWComposer' in your console.</p>
+
+      <button id="launch-opentok" class="menu-option">
+        OpenTok
+      </button>
+      <button id="launch-simplewebrtc" class="menu-option">
+        simplewebrtc
+      </button>
+    </section>
+
+    <section id="opentok" class="panel">
+      <div id="video-opentok-container">
+        <div id="video-opentok">
+        </div>
+      </div>
+      
+      <h1 class="title">OpenTok</h1>
+      <footer class="bottom-options">
+        <button id="cancel-opentok" class="bottom-option cancel">
+          Cancel
+        </button>
+        <button id="opentok-stream-handler" class="bottom-option">
+          Start
+        </button>
+      </footer>
+    </section>
+
+    <section id="simplewebrtc" class="panel">
+      <div id="simplewebrtc-opentok-container">
+        <video height="300" id="video-simplewebrtc"></video>
+        <div id="video-simplewebrtc-remotes"></div>
+      </div>
+      
+      <h1 class="title">SimpleWebRTC</h1>
+      <footer class="bottom-options">
+        <button id="cancel-simplewebrtc" class="bottom-option cancel">
+          Cancel
+        </button>
+        <button id="simplewebrtc-stream-handler" class="bottom-option">
+          Start
+        </button>
+      </footer>
+    </section>
+  </body>
+</html>

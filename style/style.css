@@ -1,0 +1,116 @@
+html {
+  font-size: 15px;
+}
+
+input::-moz-focus-inner,
+button::-moz-focus-inner {
+  border: 0;
+}
+
+.panel {
+  display: none;
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background: white;
+  display: none;
+}
+
+:target {
+  display: block;
+}
+
+h1 {
+  font-size: 3rem;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 2rem 1rem;
+  color: #00AACC;
+}
+
+h2 {
+  font-size: 200;
+  font-size: 2rem;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  color: #00AACC;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  box-sizing: border-box;
+  padding: 1rem;
+  font-size: 1.6rem;
+  font-weight: 200;
+  text-align: center;
+}
+
+.menu-option {
+  height: 4rem;
+  width: calc(100% - 2rem);
+  margin: 1rem;
+  border-radius: 2rem;
+  background: #00AACC;
+  font-size: 1.8rem;
+  color: white;
+}
+
+.title {
+  position: absolute;
+  width: 100%;
+  bottom: 7rem;
+  margin: 0;
+  padding: 0;
+}
+
+.video-container {
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.OT_mirrored {
+  display: none;
+}
+
+.OT_mirrored:first-child {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: block;
+}
+
+.bottom-options {
+  height: 6rem;
+  width: 100%;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.bottom-option {
+  height: 4rem;
+  border-radius: 2rem;
+  background: #00AACC;
+  font-size: 1.8rem;
+  color: white;
+  width: calc(50% - 2rem);
+  float: left;
+  margin: 1rem;
+  border: none;
+}
+
+.cancel {
+  background: #B90000;
+}

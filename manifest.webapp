@@ -1,0 +1,31 @@
+{
+  "name": "Firefox Hello: Reference QApp",
+  "description": "Tokbox as it is, without any wrapper or UI.",
+  "launch_path": "/index.html#menu",
+  "orientation": "portrait",
+  "type": "privileged",
+  "developer": {
+    "name": "Borja Salguero",
+    "url": "https://github.com/foo"
+  },
+  "locales": {
+    "es": {
+      "name": "Firefox Hello: Reference QApp",
+      "description": "Tokbox as it is, without any wrapper or UI."
+    },
+    "en-US": {
+      "name": "Firefox Hello: Reference QApp",
+      "description": "Tokbox as it is, without any wrapper or UI."
+    }
+  },
+  "permissions": {
+    "video-capture": {},
+    "audio-capture": {}
+  },
+  
+  "default_locale": "en-US",
+  "icons": {
+    "128": "/icons/128.jpg",
+    "60": "/icons/60.jpg"
+  }
+}
