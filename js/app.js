@@ -82,6 +82,7 @@ window.addEventListener('load', function load() {
   // Init OpenTok library
   Opentok.setConstraints(constraints);
   // Initialize session, set up event listeners, and connect
+  OT.setLogLevel(OT.DEBUG);
   session = OT.initSession(
     apiKey,
     sessionId
