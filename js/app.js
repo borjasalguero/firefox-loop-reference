@@ -25,7 +25,8 @@ var _handlerGUM = null;
 function _clean() {
   if (_opentokWorking) {
     session.disconnect();
-    document.getElementById('video-opentok-container').innerHTML = '<div id="video-opentok"></div>';
+    document.getElementById('video-opentok-container').innerHTML =
+      '<div id="video-opentok"></div>';
   }
 
 
@@ -79,15 +80,9 @@ window.addEventListener('load', function load() {
     _cancel();
   });
 
-  // Init OpenTok library
-  Opentok.setConstraints(constraints);
   // Initialize session, set up event listeners, and connect
   OT.setLogLevel(OT.DEBUG);
-  session = OT.initSession(
-    apiKey,
-    sessionId
-  );
-
+  session = TB.initSession(apiKey, sessionId);
 
   _handlerOpentok = document.getElementById('opentok-stream-handler');
   _handlerOpentok.addEventListener('click', function() {
@@ -97,21 +92,51 @@ window.addEventListener('load', function load() {
       _handlerOpentok.textContent = 'Start';
       return;
     }
+
+    document.getElementById('video-opentok-container').innerHTML =
+      '<div id="video-opentok"></div>';
     _opentokWorking = true;
     _handlerOpentok.textContent = 'Stop';
 
-    session.connect(token, function(error) {
-      var publisher = OT.initPublisher();
-      publisher = session.publish(
+    session.on({
+      streamCreated: function(event) {
+        // As we don't have multi party calls yet there will be only one peer.
+        var subscriber = session.subscribe(event.stream,
+                                           'video-opentok',
+                                           null,
+                                           function onSubscribe(error) {
+          if (error) {
+            console.log('OpenTok: ' + error.message);
+          } else {
+            console.log('OpenTok: SUBSCRIBED');
+          }
+        });
+        subscriber.on({
+          loaded: function() {
+            console.log('OpenTok: SUBSCRIBER LOADED');
+          }
+        });
+      }
+    });
+    session.connect(token, function(e) {
+      if (e) {
+        console.log('OpenTok: ' + e.message)
+        return;
+      }
+      Opentok.setConstraints(constraints);
+      session.publish(
         'video-opentok',
         null,
-        function(e) {
-          console.log('OpenTok: STREAM PUBLISHED');
+        function onPublish(ee) {
+          if (ee) {
+            console.log('OpenTok: ' + ee.message);
+          } else {
+            console.log('OpenTok: STREAM PUBLISHED');
+          }
         }
       );
     });
   });
-
 
   _handlerGUM = document.getElementById('gum-stream-handler');
   _handlerGUM.addEventListener('click', function() {
