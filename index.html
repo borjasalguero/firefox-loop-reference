@@ -1,13 +1,16 @@
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Firefox Hello: QApp</title>
     <link rel="stylesheet" type="text/css" href="style/style.css">
-    
     
     <script src='libs/opentok.js'></script>
     <script src='libs/tokbox/v2.2.9.1/js/TB.js'></script>
     <script src='libs/simplewebrtc.js'></script>
 
+    <script src='js/tokbox.js'></script>
+    <script src='js/simplewebrtc.js'></script>
+    <script src='js/gum.js'></script>
     <script src='js/app.js'></script>
   </head>
   <body>
@@ -36,9 +39,6 @@
         <button id="cancel-gum" class="bottom-option cancel">
           Cancel
         </button>
-        <button id="gum-stream-handler" class="bottom-option">
-          Start
-        </button>
       </footer>
     </section>
 
@@ -51,25 +51,17 @@
         <button id="cancel-opentok" class="bottom-option cancel">
           Cancel
         </button>
-        <button id="opentok-stream-handler" class="bottom-option">
-          Start
-        </button>
       </footer>
     </section>
 
     <section id="simplewebrtc" class="panel">
-      <div id="simplewebrtc-opentok-container">
-        <video height="300" id="video-simplewebrtc"></video>
-        <div id="video-simplewebrtc-remotes"></div>
+      <div id="video-simplewebrtc-container">
       </div>
       
       <h1 class="title">SimpleWebRTC</h1>
       <footer class="bottom-options">
         <button id="cancel-simplewebrtc" class="bottom-option cancel">
           Cancel
-        </button>
-        <button id="simplewebrtc-stream-handler" class="bottom-option">
-          Start
         </button>
       </footer>
     </section>

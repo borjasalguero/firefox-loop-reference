@@ -61,6 +61,7 @@ p {
   background: #00AACC;
   font-size: 1.8rem;
   color: white;
+  border: none;
 }
 
 .title {
@@ -100,13 +101,13 @@ p {
 }
 
 .bottom-option {
+  box-sizing: border-box;
   height: 4rem;
   border-radius: 2rem;
   background: #00AACC;
   font-size: 1.8rem;
   color: white;
-  width: calc(50% - 2rem);
-  float: left;
+  width: calc(100% - 2rem);
   margin: 1rem;
   border: none;
 }
